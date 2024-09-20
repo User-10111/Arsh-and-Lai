@@ -1,0 +1,67 @@
+import requests
+import subprocess
+import json
+
+def call_chatgpt(prompt):
+    api_key = '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'
+    headers = {
+        'Authorization': f'Bearer {api_key}',
+        'Content-Type': 'application/json',
+    }
+    
+    data = {
+        'model': 'gpt-4',
+        'messages': [{'role': 'user', 'content': prompt}],
+        'max_tokens': 100,
+    }
+    
+    response = requests.post('https://api.openai.com/v1/chat/completions', headers=headers, json=data)
+    response_json = response.json()
+    
+    if response_json and 'choices' in response_json and len(response_json['choices']) > 0:
+        return response_json['choices'][0]['message']['content']
+    else:
+        return "No response from ChatGPT."
+
+def send_to_google_sheets(prompt, response):
+    url = 'https://script.google.com/macros/s/AKfycbyrjJ9Vc5l9WYR9hWBKbqLQj3Ima-7uDn1T8nvmTd1mc2SNAvw3yMvPllFzv3Hxkkcs/exec'
+    
+    # Data payload
+    payload = json.dumps({
+        'prompt': prompt,
+        'response': response
+    })
+    
+
+    curl_command = [
+        'curl',
+        '-X', 'POST', url,
+        '-H', 'Content-Type: application/json',
+        '-d', payload
+    ]
+    
+
+    subprocess.run(curl_command, check=True)
+
+# Step 3: Main Function (Modified to continue taking prompts)
+def main():
+    print("Enter 'exit' to quit the program.")
+    
+    while True:
+        prompt = input("Enter your prompt for ChatGPT: ")
+        
+
+        if prompt.lower() == "exit":
+            print("Exiting the program. Goodbye!")
+            break
+        
+
+        chatgpt_response = call_chatgpt(prompt)
+        print(f"ChatGPT Response: {chatgpt_response}")
+        
+
+        send_to_google_sheets(prompt, chatgpt_response)
+        print("Data sent to Google Sheets successfully.\n")
+
+if __name__ == "__main__":
+    main()
