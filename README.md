@@ -10,14 +10,11 @@ Features
   How to Use
 
     Start the program:
-    Run the script using Python. The program will prompt you to enter your input:
-
-    bash
-
-    python script_name.py
-
+    Paste this into your browser: https://colab.research.google.com/github//User-10111/Arsh-and-Lai/blob/main/Arsh%20and%20Lai.ipynb 
+    Press the start button on the top left under the 'code' button
+    
     Input a prompt:
-    Type a question or statement and hit enter to send it to ChatGPT. The AI will respond, and the interaction will be logged in your Google Sheets.
+    Type a question or statement and hit enter to send it to ChatGPT. The AI will respond.
 
     Exit the program:
     Enter exit to stop the program.
